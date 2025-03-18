@@ -182,14 +182,14 @@ function formatDate(date) {
   let hours = objData.getUTCHours();
   const minutes = objData.getUTCMinutes().toString().padStart(2, '0');
   const seconds = objData.getUTCSeconds().toString().padStart(2, '0');
-  const isAN = hours >= 12 ? 'PM' : 'AM';
+  const isAM = hours >= 12 ? 'PM' : 'AM';
 
   if (hours === 0) {
     hours = 12;
   } else if (hours > 12) {
     hours -= 12;
   }
-  return `${month}/${dates}/${year}, ${hours}:${minutes}:${seconds} ${isAN}`;
+  return `${month}/${dates}/${year}, ${hours}:${minutes}:${seconds} ${isAM}`;
 }
 
 /**
@@ -204,8 +204,25 @@ function formatDate(date) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  const monthsDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const numberMonth = month - 1;
+  let count = 0;
+  if (
+    numberMonth === 1 &&
+    year % 4 === 0 &&
+    (year % 100 !== 0 || year % 400 === 0)
+  ) {
+    monthsDays[1] = 29;
+  } else monthsDays[1] = 28;
+  for (let i = 1; i <= monthsDays[numberMonth]; i += 1) {
+    const newDate = new Date(year, numberMonth, i);
+    const dayOfWeek = newDate.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      count += 1;
+    }
+  }
+  return count;
 }
 
 /**
