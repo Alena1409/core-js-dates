@@ -259,7 +259,7 @@ function getWeekNumberByDate(date) {
  */
 function getNextFridayThe13th(date) {
   const newDate = new Date(date);
-  newDate.setUTCDate(12);
+  newDate.setUTCDate(13);
   while (newDate.getDay() !== 5) {
     newDate.setUTCMonth(newDate.getUTCMonth() + 1);
   }
